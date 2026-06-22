@@ -1,0 +1,36 @@
+name: Build prod
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    permissions: 
+      contents: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '25'
+
+    - name: Install dependencies
+      run: |
+        npm install
+    - name: Build prod
+      run: npm run build
+
+    - name: Deploy
+      uses: s0/git-publish-subdir-action@master
+      env:
+        REPO: self
+        BRANCH: build
+        FOLDER: dist
+        # TARGET_DIR: dist
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
