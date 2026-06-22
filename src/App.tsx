@@ -18,7 +18,7 @@ function App() {
   }
 
   return (
-    <div>
+    <div className='container'>
       <h1>COLORDLE</h1>
       <div style={{ backgroundColor: `#${color}` }} className="color_strip">
         {userAnswer && <h2>Correct answer: {color}</h2>}

@@ -12,6 +12,6 @@ export const ColorInput = ({ onSubmit, disabled }: {
     }
     return <div>
         <input value={value} onChange={(event) => { setValue(event.target.value) }} />
-        <button onClick={submitHandler} disabled={disabled}>Submit</button>
+        <button onClick={submitHandler} disabled={disabled}>Подтвердить</button>
     </div>
 }
