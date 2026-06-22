@@ -7,10 +7,12 @@ export const ColorInput = ({ onSubmit, disabled }: {
 }) => {
     const [value, setValue] = useState<string>('');
     const submitHandler = () => {
-        if (validateColor(value))
+        if (validateColor(value)) {
             onSubmit(value)
+            setValue('');
+        }
     }
-    return <div>
+    return <div className='inputs'>
         <input value={value} onChange={(event) => { setValue(event.target.value) }} />
         <button onClick={submitHandler} disabled={disabled}>Подтвердить</button>
     </div>

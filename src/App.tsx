@@ -9,11 +9,11 @@ function App() {
   const [userAnswer, setUserAnswer] = useState<string | null>(null)
 
   const onSubmitColor = (value: string) => {
-    setUserAnswer(value)
+    setUserAnswer(value.toUpperCase())
   }
 
   const nextHandler = () => {
-    setColor(generateRandomColor());
+    setColor(generateRandomColor().toUpperCase());
     setUserAnswer(null);
   }
 
@@ -21,10 +21,10 @@ function App() {
     <div className='container'>
       <h1>COLORDLE</h1>
       <div style={{ backgroundColor: `#${color}` }} className="color_strip">
-        {userAnswer && <h2>Correct answer: {color}</h2>}
+        {userAnswer && <h2>Правильный ответ: #{color}</h2>}
       </div>
       <div style={userAnswer ? { backgroundColor: `#${userAnswer}` } : undefined} className="color_strip">
-        {userAnswer && <h2>Your answer: {userAnswer} ({getUserScore(`#${color}`, `#${userAnswer}`)}%)</h2>}
+        {userAnswer && <h2>Ваш ответ: #{userAnswer} ({getUserScore(`#${color}`, `#${userAnswer}`)}%)</h2>}
       </div>
       <ColorInput onSubmit={onSubmitColor} disabled={!!userAnswer}/>
       {userAnswer && <button onClick={nextHandler}>Далее</button>}
