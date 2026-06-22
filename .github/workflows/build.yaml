@@ -24,7 +24,7 @@ jobs:
       run: |
         npm install
     - name: Build prod
-      run: npm run build
+      run: vite build
 
     - name: Deploy
       uses: s0/git-publish-subdir-action@master
