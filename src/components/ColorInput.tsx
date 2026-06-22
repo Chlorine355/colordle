@@ -6,14 +6,22 @@ export const ColorInput = ({ onSubmit, disabled }: {
     disabled?: boolean;
 }) => {
     const [value, setValue] = useState<string>('');
+    const [error, setError] = useState<string>('');
     const submitHandler = () => {
-        if (validateColor(value)) {
-            onSubmit(value)
+        const result = validateColor(value);
+        if (result.isValid) {
+            onSubmit(value);
+            setError('');
             setValue('');
+        } else {
+            setError(result.message)
         }
     }
-    return <div className='inputs'>
-        <input value={value} onChange={(event) => { setValue(event.target.value) }} />
-        <button onClick={submitHandler} disabled={disabled}>Подтвердить</button>
+    return <div className='controls'>
+        <div className="inputs">
+            <input value={value} onChange={(event) => { setValue(event.target.value) }} maxLength={6}/>
+            <button onClick={submitHandler} disabled={disabled}>Подтвердить</button>
+        </div>
+        <div className='error'>{error}</div>
     </div>
 }
