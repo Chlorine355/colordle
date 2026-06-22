@@ -8,12 +8,20 @@ function App() {
   const [color, setColor] = useState<string>(generateRandomColor());
   const [userAnswer, setUserAnswer] = useState<string | null>(null)
 
+  const [best, setBest] = useState<number>(Number(localStorage.getItem('best') || 0));
+
   const onSubmitColor = (value: string) => {
     setUserAnswer(value.toUpperCase())
+    const score = getUserScore(`#${color}`, `#${value}`);
+    const numericScore = Number(score);
+    if (numericScore > best) {
+      setBest(numericScore)
+      localStorage.setItem('best', score)
+    }
   }
 
   const nextHandler = () => {
-    setColor(generateRandomColor().toUpperCase());
+    setColor(generateRandomColor());
     setUserAnswer(null);
   }
 
@@ -28,6 +36,7 @@ function App() {
       </div>
       <ColorInput onSubmit={onSubmitColor} disabled={!!userAnswer}/>
       {userAnswer && <button onClick={nextHandler}>Далее</button>}
+      <div className='best'>Рекорд: {best}%</div>
     </div>
   )
 }

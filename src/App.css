@@ -18,7 +18,8 @@
     align-items: center;
     flex-direction: column;
     width: 100%;
-    
+    height: 100%;
+    padding-bottom: 20px;
 }
 
 .inputs {
@@ -28,8 +29,8 @@
 }
 
 .controls {
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 12px;
+    margin-bottom: 12px;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -38,4 +39,9 @@
 
 .error {
     color: crimson;
+    max-width: 80vw;
+}
+
+.best {
+    margin-top: auto;
 }

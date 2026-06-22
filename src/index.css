@@ -52,10 +52,10 @@
 
 #root {
   width: 100vw;
+  height: 100vh;
   margin: 0 auto;
   text-align: center;
   border-inline: 1px solid var(--border);
-  min-height: 100svh;
 }
 
 body {
