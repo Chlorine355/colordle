@@ -1,43 +1,59 @@
 import { useState } from 'react';
 import './../App.css'
 import { generateRandomColor } from '../lib/generateRandomColor';
-import { getUserScore } from '../lib/getProximity';
 import { ColorInput } from './ColorInput';
 import { Link } from 'react-router-dom';
+import { getUserScore } from '../lib/getProximity';
 
 function PracticeMode() {
   const [color, setColor] = useState<string>(generateRandomColor());
-  const [userAnswer, setUserAnswer] = useState<string | null>(null)
+  const correctRed = parseInt(color.slice(0, 2), 16);
+  const correctGreen = parseInt(color.slice(2, 4), 16);
+  const correctBlue = parseInt(color.slice(4, 6), 16);
 
-  const [best, setBest] = useState<number>(Number(localStorage.getItem('best') || 0));
+  const [userAnswers, setUserAnswers] = useState<string[]>([])
 
   const onSubmitColor = (value: string) => {
-    setUserAnswer(value.toUpperCase())
-    const score = getUserScore(`#${color}`, `#${value}`);
-    const numericScore = Number(score);
-    if (numericScore > best) {
-      setBest(numericScore)
-      localStorage.setItem('best', score)
-    }
+    setUserAnswers((prev) => [...prev, value.toUpperCase()])
   }
 
   const nextHandler = () => {
     setColor(generateRandomColor());
-    setUserAnswer(null);
+    setUserAnswers([]);
   }
 
   return (
     <>
       <div style={{ backgroundColor: `#${color}` }} className="color_strip">
-        {userAnswer && <h2 className='answer'>Правильный ответ: #{color}</h2>}
+        {userAnswers.length === 3 && <h2 className='answer'>Правильный ответ: #{color}</h2>}
       </div>
-      <div style={userAnswer ? { backgroundColor: `#${userAnswer}` } : undefined} className="color_strip">
-        {userAnswer && <h2 className='answer'>Ваш ответ: #{userAnswer} ({getUserScore(`#${color}`, `#${userAnswer}`)}%)</h2>}
+      <div className='practice_thirds'>
+        {userAnswers.map((userAnswer) => {
+          const redChar = userAnswer.slice(0, 2);
+          const greenChar = userAnswer.slice(2, 4);
+          const blueChar = userAnswer.slice(4, 6);
+
+          const red = parseInt(redChar, 16);
+          const redSign = red > correctRed ? '↓' : red === correctRed ? '=' : '↑';
+
+          const green = parseInt(greenChar, 16);
+          const greenSign = green > correctGreen ? '↓' : green === correctGreen ? '=' : '↑';
+          
+          const blue = parseInt(blueChar, 16);
+          const blueSign = blue > correctBlue ? '↓' : blue === correctBlue ? '=' : '↑';
+
+          return (
+            <div style={userAnswer ? { backgroundColor: `#${userAnswer}` } : undefined} className="color_third">
+              <h2 className='answer'>
+                #{redChar}{redSign}{greenChar}{greenSign}{blueChar}{blueSign} ({getUserScore(`#${color}`, `#${userAnswer}`)}%)
+              </h2>
+            </div>
+          )
+        })}
       </div>
-      <ColorInput onSubmit={onSubmitColor} disabled={!!userAnswer}/>
-      {userAnswer && <button onClick={nextHandler}>Далее</button>}
-      <div className='best'>Рекорд: {best}%</div>
-      <Link to={'/colordle'}>Классика</Link>
+      <ColorInput onSubmit={onSubmitColor} disabled={userAnswers.length === 3} />
+      {userAnswers.length === 3 && <button onClick={nextHandler}>Далее</button>}
+      <Link to={'/colordle'} className='best'>Классика</Link>
     </>
   )
 }

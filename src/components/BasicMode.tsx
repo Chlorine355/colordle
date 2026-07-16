@@ -37,7 +37,7 @@ function BasicMode() {
       <ColorInput onSubmit={onSubmitColor} disabled={!!userAnswer}/>
       {userAnswer && <button onClick={nextHandler}>Далее</button>}
       <div className='best'>Рекорд: {best}%</div>
-      <Link to={'/colordle/practice'}>Практика</Link>
+      <Link to={'/colordle/practice'}>Тренировка</Link>
     </>
   )
 }
