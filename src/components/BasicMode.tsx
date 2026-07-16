@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import './App.css'
-import { generateRandomColor } from './lib/generateRandomColor';
-import { ColorInput } from './components/ColorInput';
-import { getUserScore } from './lib/getProximity';
+import './../App.css'
+import { generateRandomColor } from '../lib/generateRandomColor';
+import { getUserScore } from '../lib/getProximity';
+import { ColorInput } from './ColorInput';
+import { Link } from 'react-router-dom';
 
-function App() {
+function BasicMode() {
   const [color, setColor] = useState<string>(generateRandomColor());
   const [userAnswer, setUserAnswer] = useState<string | null>(null)
 
@@ -26,8 +27,7 @@ function App() {
   }
 
   return (
-    <div className='container'>
-      <h1>COLORDLE</h1>
+    <>
       <div style={{ backgroundColor: `#${color}` }} className="color_strip">
         {userAnswer && <h2 className='answer'>Правильный ответ: #{color}</h2>}
       </div>
@@ -37,8 +37,9 @@ function App() {
       <ColorInput onSubmit={onSubmitColor} disabled={!!userAnswer}/>
       {userAnswer && <button onClick={nextHandler}>Далее</button>}
       <div className='best'>Рекорд: {best}%</div>
-    </div>
+      <Link to={'/colordle/practice'}>Практика</Link>
+    </>
   )
 }
 
-export default App
+export default BasicMode;
